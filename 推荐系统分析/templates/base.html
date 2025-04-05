@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %} - 职业推荐系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <h2>导航</h2>
+            <ul>
+                <li><a href="{{ url_for('analysis') }}">模型分析</a></li>
+                <li><a href="{{ url_for('knowledge') }}">知识图谱</a></li>
+                <li><a href="{{ url_for('lagou') }}">拉钩推荐</a></li>
+                <li><a href="{{ url_for('learning') }}">推荐学习路径</a></li>
+                <li><a href="{{ url_for('index') }}">重新填写问卷</a></li>
+            </ul>
+        </div>
+        
+        <!-- 主内容区域 -->
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>

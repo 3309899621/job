@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}推荐学习路径{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1>推荐学习路径</h1>
+        <div class="user-info">
+            <h2>您的信息</h2>
+            <p><strong>性别：</strong> {{ gender }}</p>
+            <p><strong>年龄：</strong> {{ age }}</p>
+            <p><strong>感兴趣方向：</strong> {{ direction }}</p>
+            <p><strong>兴趣关键词：</strong> {{ keywords|join(' ') }}</p>
+        </div>
+
+        <div class="learning-path">
+            <h2>学习路径</h2>
+            <div class="path-content">{{ recommend_path|safe }}</div>
+        </div>
+    </div>
+
+    <style type="text/css">
+        .container { max-width: 900px; margin: 40px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 30px; }
+        .user-info { background-color: #f9fafc; padding: 20px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #e0e6ed; }
+        .user-info h2 { font-size: 20px; color: #34495e; margin: 0 0 15px; }
+        .user-info p { margin: 10px 0; color: #555; }
+        .learning-path { margin-top: 30px; }
+        .learning-path h2 { font-size: 20px; color: #34495e; margin: 0 0 20px; }
+        .path-content { background-color: #f9fafc; padding: 20px; border-radius: 8px; border: 1px solid #e0e6ed; line-height: 1.6; }
+        .path-content h1, .path-content h2, .path-content h3 { color: #2c3e50; }
+        .path-content p { color: #555; }
+        .path-content ul { padding-left: 20px; }
+        .path-content li { margin: 10px 0; color: #555; }
+    </style>
+{% endblock %}

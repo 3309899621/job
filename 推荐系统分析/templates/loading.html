@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}正在分析{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1>正在分析中...</h1>
+        <p>请稍候，我们正在根据您的信息生成推荐结果。</p>
+        <div class="loader"></div>
+    </div>
+
+    <style type="text/css">
+        .container { max-width: 600px; margin: 100px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); text-align: center; }
+        h1 { color: #2c3e50; margin-bottom: 20px; }
+        p { color: #555; margin-bottom: 30px; }
+        .loader { border: 8px solid #f3f3f3; border-top: 8px solid #3498db; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+
+    <script type="text/javascript">
+        function checkStatus() {
+            fetch('/check_status/{{ task_id }}')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'completed') {
+                        window.location.href = '/analysis';
+                    } else if (data.status === 'not_found') {
+                        alert('任务未找到，请重新提交问卷');
+                        window.location.href = '/';
+                    } else {
+                        setTimeout(checkStatus, 1000); // 每秒轮询
+                    }
+                })
+                .catch(error => {
+                    console.error('检查状态失败:', error);
+                    setTimeout(checkStatus, 1000);
+                });
+        }
+        // 页面加载后开始检查状态
+        window.onload = function() {
+            checkStatus();
+        };
+    </script>
+{% endblock %}

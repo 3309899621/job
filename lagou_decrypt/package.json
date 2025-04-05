@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "get-random-values": "^3.0.0",
+    "jsencrypt": "^3.3.2"
+  }
+}

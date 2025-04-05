@@ -1,0 +1,176 @@
+/* 全局样式 */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #eef2f7;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* 美化侧边栏 */
+.sidebar {
+    width: 220px;
+    background: linear-gradient(135deg, #2c3e50, #3498db); /* 渐变背景 */
+    color: white;
+    padding: 30px 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 100vh;
+    transition: width 0.3s ease;
+}
+
+.sidebar h2 {
+    margin: 0 0 30px;
+    font-size: 26px;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin: 20px 0;
+}
+
+.sidebar a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: background 0.3s ease, padding-left 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding-left: 20px; /* 悬停时轻微左移 */
+    color: #fff;
+}
+
+/* 主内容区域 */
+.content {
+    flex-grow: 1;
+    padding: 40px;
+    margin-left: 220px; /* 与侧边栏宽度一致 */
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    max-width: 900px;
+    margin: 0 auto;
+    transition: transform 0.2s ease;
+}
+
+.container:hover {
+    transform: translateY(-5px); /* 轻微上浮效果 */
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.result {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #e0e6ed;
+    border-radius: 8px;
+    background-color: #f9fafc;
+}
+
+/* 问卷页样式 */
+.form-group {
+    margin: 20px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #34495e;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1dbe4;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #2980b9, #2471a3);
+    transform: translateY(-2px);
+}
+
+.error {
+    color: #e74c3c;
+    text-align: center;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 80px;
+        padding: 20px 10px;
+    }
+    .sidebar h2 {
+        font-size: 20px;
+    }
+    .sidebar a {
+        font-size: 14px;
+        padding: 8px;
+    }
+    .content {
+        margin-left: 80px;
+        padding: 20px;
+    }
+}
+
+.form-group textarea {
+    width: 300px;
+    height: 80px;
+    vertical-align: top;
+    resize: vertical; /* 允许垂直调整大小 */
+}
+
+.form-group label {
+    display: inline-block;
+    width: 150px;
+}

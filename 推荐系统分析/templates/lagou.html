@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}拉钩推荐{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1>拉钩推荐职位</h1>
+        
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% else %}
+            <div class="user-info">
+                <h2>您的信息</h2>
+                <p><strong>性别：</strong> {{ gender }}</p>
+                <p><strong>年龄：</strong> {{ age }}</p>
+                <p><strong>感兴趣方向：</strong> {{ direction }}</p>
+                <p><strong>兴趣关键词：</strong> {{ keywords|join(' ') }}</p>
+            </div>
+
+            <div class="job-list">
+                <h2>推荐职位</h2>
+                <div class="job-grid">
+                    {% for job in jobs %}
+                        <a href="{{ job[1] }}" target="_blank" class="job-card">
+                            <h3>{{ job[0] }}</h3>
+                            <p><strong>公司：</strong> {{ job[2] }}</p>
+                            <p><strong>规模：</strong> {{ job[3] }}</p>
+                            <p><strong>学历：</strong> {{ job[4] }}</p>
+                            <p><strong>薪资：</strong> {{ job[5] }}</p>
+                            <p><strong>发布时间：</strong> {{ job[6].strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <style type="text/css">
+        .container { max-width: 1200px; margin: 40px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 30px; }
+        .user-info { background-color: #f9fafc; padding: 20px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #e0e6ed; }
+        .user-info h2 { font-size: 20px; color: #34495e; margin: 0 0 15px; }
+        .user-info p { margin: 10px 0; color: #555; }
+        .job-list { margin-top: 30px; }
+        .job-list h2 { font-size: 20px; color: #34495e; margin: 0 0 20px; }
+        .job-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .job-card { background: linear-gradient(135deg, #f9fafc, #ffffff); padding: 20px; border-radius: 10px; border: 1px solid #e0e6ed; text-decoration: none; color: #333; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); }
+        .job-card:hover { transform: translateY(-5px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); border-color: #3498db; }
+        .job-card h3 { font-size: 18px; color: #2c3e50; margin: 0 0 10px; }
+        .job-card p { margin: 8px 0; font-size: 14px; color: #555; }
+        .error { color: #e74c3c; text-align: center; font-weight: bold; margin: 20px 0; }
+    </style>
+{% endblock %}

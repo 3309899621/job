@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>职业推荐系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>职业推荐问卷</h1>
+        <p>请填写以下信息以获取个性化职业推荐</p>
+        
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="gender">性别：</label>
+                <select id="gender" name="gender" required>
+                    <option value="">请选择</option>
+                    <option value="男">男</option>
+                    <option value="女">女</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="age">年龄：</label>
+                <input type="number" id="age" name="age" min="1" max="100" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="interest_direction">感兴趣方向：</label>
+                <input type="text" id="interest_direction" name="interest_direction" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="interest_keywords">兴趣关键词：</label>
+                <input type="text" id="interest_keywords" name="interest_keywords" placeholder="如：编程、设计、写作" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="current_level">当前水平：</label>
+                <select id="current_level" name="current_level" required>
+                    <option value="">请选择</option>
+                    <option value="小白">小白</option>
+                    <option value="进阶">进阶</option>
+                    <option value="大神">大神</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="free_time">每日空余时间段：</label>
+                <input type="time" id="free_time_start" name="free_time_start" required>
+                <span>至</span>
+                <input type="time" id="free_time_end" name="free_time_end" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="study_hours">每天愿意学习时间（小时）：</label>
+                <input type="number" id="study_hours" name="study_hours" min="0" max="24" step="0.5" required>
+            </div>
+            
+            <!-- 新增：实习经历 -->
+            <div class="form-group">
+                <label for="internship_experience">实习经历（选填）：</label>
+                <textarea id="internship_experience" name="internship_experience" placeholder="如：2023年在某公司担任前端实习生"></textarea>
+            </div>
+            
+            <!-- 新增：学习过的专业课 -->
+            <div class="form-group">
+                <label for="major_courses">学习过的专业课（选填）：</label>
+                <textarea id="major_courses" name="major_courses" placeholder="如：计算机网络、数据结构、操作系统"></textarea>
+            </div>
+            
+            <!-- 新增：已读相关书籍 -->
+            <div class="form-group">
+                <label for="related_books">已读相关书籍（选填）：</label>
+                <textarea id="related_books" name="related_books" placeholder="如：《JavaScript高级程序设计》、《深入理解计算机系统》"></textarea>
+            </div>
+            
+            <button type="submit">提交问卷</button>
+        </form>
+    </div>
+</body>
+</html>
