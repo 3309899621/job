@@ -11,9 +11,42 @@ import re
 from sklearn.pipeline import Pipeline
 import numpy as np
 from collections import defaultdict
+from logging.handlers import RotatingFileHandler
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# 确保 logs 目录存在
+if not os.path.exists('logs'):
+    try:
+        os.makedirs('logs')
+    except PermissionError:
+        print("无法创建日志目录，请检查权限！")
+        raise
+
+# 创建 logger
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# 创建格式化器
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+# 创建文件处理器（带轮转）
+file_handler = RotatingFileHandler(
+    'logs/model_train.log',
+    maxBytes=1e6,  # 1MB
+    backupCount=3,  # 保留3个备份
+    encoding='utf-8'
+)
+file_handler.setFormatter(formatter)
+
+# 创建控制台处理器
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(formatter)
+
+# 添加处理器到logger
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
+
+# 测试日志
+logger.info("日志系统配置完成")
 
 if not os.path.exists('models'):
     os.makedirs('models')
