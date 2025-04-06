@@ -55,5 +55,13 @@
             }]
         };
         myChart.setOption(option);
+        
+        // 添加点击事件监听
+        myChart.on('click', function(params) {
+            if(params.dataType === 'node') {
+                var keyword = encodeURIComponent(params.data.keyword || params.data.name);
+                window.open('https://so.csdn.net/so/search?q=' + keyword, '_blank');
+            }
+        });
     </script>
 {% endblock %}
