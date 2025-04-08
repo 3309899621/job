@@ -6,14 +6,15 @@ import re
 import numpy as np
 import os
 
+
 class PositionRecommender:
     def __init__(self, model_path='models/position_classifier.joblib'):
         self.model_path = model_path
         self.model = None
         self.stopwords = set(['的', '了', '和', '与', '或', '等', '及', '都', '要', '把', '这', '那', '你', '我', '他',
-                            '有', '是', '在', '能', '好', '会', '上', '着', '给', '到', '中', '来', '为', '很',
-                            '对', '就', '而', '使', '向', '并', '但', '却', '让', '去', '该', '些', '被', '比'])
-        
+                              '有', '是', '在', '能', '好', '会', '上', '着', '给', '到', '中', '来', '为', '很',
+                              '对', '就', '而', '使', '向', '并', '但', '却', '让', '去', '该', '些', '被', '比'])
+
         self.skill_keywords = {
             'python': ['python', 'django', 'flask', 'pandas', '爬虫'],
             'java': ['java', 'spring', 'springboot', 'mybatis'],
@@ -65,7 +66,7 @@ class PositionRecommender:
         processed_text = self.preprocess_text(text)
         proba = self.model.predict_proba([processed_text])
         top_classes_idx = np.argsort(proba[0])[-top_n:][::-1]
-        
+
         results = []
         for idx in top_classes_idx:
             position = self.model.classes_[idx]
@@ -74,14 +75,32 @@ class PositionRecommender:
                 'position': position,
                 'probability': probability
             })
-        
+
         return results
-    
+
+
 def GLM_analysis(input_text):
     client = ZhipuAI(api_key="60a107de2b381145b3ab9955187f2e50.Z4hUWiul0ggb2pFg")
     system_prompt = '''Roleplay: 你现在是一个兴趣爱好分析官，你可以根据用户提供的关键词以及年龄给用户推荐合适的信息。
     Task: 根据用户提供的关键词以及年龄完成下面的任务:
-    1. 生成一个可以用于pyecharts的数据字典，要保证数据字典是正确的，关系之间有着正确的关系，以及一个推荐学习路径，必须为markdown格式。样例：
+    1. 生成一个可以用于pyecharts的数据字典，要保证数据字典是正确的，关系之间有着正确的关系，以及一个推荐学习路径，必须为markdown格式。
+    2. 数据字典中的节点数量必须至少包含50个节点，节点之间要有合理的关联关系。
+    3. 节点类型应该包括但不限于：
+       - 技术领域（如：前端开发、后端开发、数据分析等）
+       - 具体技术栈（如：Python、Java、React等）
+       - 工具和框架（如：Docker、Git、Spring Boot等）
+       - 软技能（如：项目管理、团队协作等）
+       - 行业领域（如：金融科技、医疗健康等）
+    4. 节点之间的关系应该体现：
+       - 技术之间的依赖关系
+       - 技能之间的关联性
+       - 职业发展路径
+       - 技术栈组合
+    5. 每个节点都应该有合适的symbolSize，体现其重要性
+    6. 输出的内容必须符合正常的json格式，且可以被json.loads正常格式化，不要回答不属于规范的其它内容。
+    7. 不要输出多余的内容。
+
+    样例格式：
     ```json
     {
     "nodes": [
@@ -99,9 +118,6 @@ def GLM_analysis(input_text):
     ],
     "recommend_path": "markdown内容"}
     ```
-    2. pyecharts的数据字典必须的符合样例，学习路径必须为优美的html格式。
-    3. 输出的内容必须符合正常的json格式，且可以被json.loads正常格式化，不要回答不属于规范的其它内容。
-    4. 不要输出多余的内容。
     '''
     messages = [
         {"role": "system", "content": system_prompt},

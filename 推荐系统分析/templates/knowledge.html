@@ -30,31 +30,91 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script type="text/javascript">
         var myChart = echarts.init(document.getElementById('graph'));
-        var nodes = {{ nodes|tojson }};
-        var links = {{ links|tojson }};
+        var nodes = {{ nodes|tojson if nodes else [] }};
+        var links = {{ links|tojson if links else [] }};
+        
+        // 调试信息
+        console.log('Nodes data:', nodes);
+        console.log('Links data:', links);
+        
+        if(nodes.length === 0) {
+            alert('知识图谱数据为空，请返回重新输入信息');
+            window.location.href = '/';
+        }
 
         var option = {
-            title: { text: '兴趣知识图谱', left: 'center', textStyle: { color: '#34495e' } },
-            tooltip: {},
+            title: { text: '多维知识图谱', left: 'center', textStyle: { color: '#34495e' } },
+            tooltip: { formatter: function(params) {
+                if (params.dataType === 'node') {
+                    return `${params.data.name}<br>类别: ${params.data.category || '未分类'}<br>热度: ${params.data.popularity || ''}`;
+                }
+                return `${params.data.source} → ${params.data.target}<br>关系: ${params.data.relationType}`;
+            }},
+            toolbox: {
+                feature: {
+                    saveAsImage: {},
+                    restore: {},
+                    dataZoom: {}
+                }
+            },
+            legend: {
+                data: ['核心概念','衍生技能','关联职业','支撑知识']
+            },
             series: [{
                 type: 'graph',
                 layout: 'force',
-                data: nodes,
+                data: nodes.map(node => ({
+                    ...node,
+                    itemStyle: {
+                        color: {
+                            '核心概念': '#5470c6',
+                            '衍生技能': '#91cc75',
+                            '关联职业': '#fac858',
+                            '支撑知识': '#ee6666'
+                        }[node.category] || '#73c0de'
+                    }
+                })),
                 links: links,
                 roam: true,
-                label: { show: true, position: 'right', formatter: '{b}' },
-                force: { 
-                    repulsion: 300,  // 增大斥力，避免节点黏在一起
-                    edgeLength: 100, // 增大边长，扩展图谱
-                    gravity: 0.1     // 轻微重力，使布局更稳定
+                emphasis: { focus: 'adjacency' },
+                label: {
+                    show: true,
+                    position: 'right',
+                    formatter: '{b}',
+                    fontSize: 14
                 },
-                edgeSymbol: ['none', 'arrow'],
-                edgeSymbolSize: 10,
-                lineStyle: { color: '#3498db', width: 2 },
-                itemStyle: { color: '#3498db' }
+                force: {
+                    repulsion: 100,
+                    edgeLength: [50, 150],
+                    gravity: 0.15,
+                    friction: 0.2,
+                    layoutAnimation: true
+                },
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [6, 12],
+                lineStyle: {
+                    width: 2,
+                    curveness: 0.3,
+                    type: (params) => {
+                        const types = {'包含':'solid','依赖':'dashed','提升':'dotted','关联':'double'};
+                        return types[params.data.relationType] || 'solid';
+                    }
+                },
+                categories: [
+                    {name: '核心概念', itemStyle: { color: '#5470c6' }},
+                    {name: '编程语言', itemStyle: { color: '#91cc75' }},
+                    {name: '开发框架', itemStyle: { color: '#fac858' }},
+                    {name: '云服务', itemStyle: { color: '#ee6666' }},
+                    {name: '工具链', itemStyle: { color: '#73c0de' }},
+                    {name: '职业认证', itemStyle: { color: '#3ba272' }},
+                    {name: '行业应用', itemStyle: { color: '#fc8452' }},
+                    {name: '支撑知识', itemStyle: { color: '#9a60b4' }}
+                ]
             }]
         };
-        myChart.setOption(option);
+        if(nodes.length > 0) {
+            myChart.setOption(option);
+        }
         
         // 添加点击事件监听
         myChart.on('click', function(params) {
